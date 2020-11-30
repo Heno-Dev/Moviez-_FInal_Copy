@@ -1,0 +1,31 @@
+﻿@model Moviez_.Models.Movie
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Movie Information</h1>
+<div>
+    <dl class="row">
+        <dt class=" col-sm-3">Movie Name:</dt>
+        <dd class=" col-sm-9">@Model.Name</dd>
+        <dt class=" col-sm-3 text-truncate">@Model.Genre.Name</dt>
+    </dl>
+    <dl class="row">
+        <dt class="col-sm-3">Details:</dt>
+        <dd class="col-sm-9">
+            Release Date: @Model.ReleaseDate<br />
+            Description: @Model.Description<br />
+        </dd>
+    </dl>
+
+    <dl class="row">
+
+        <dt class="col-sm-3">Store Information:</dt>
+        <dd class="col-sm-9">
+            Inventory: @Model.InStock<br />
+            Added to System: <em>@Model.DateAdded.ToLongDateString()</em>
+        </dd>
+    </dl>
+</div>

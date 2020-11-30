@@ -1,0 +1,46 @@
+﻿@model Moviez_.ViewModels.MovieFormViewModel
+
+@{
+    ViewBag.Title = "MovieForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movie Information</h2>
+
+@using (Html.BeginForm("Save", "Movies"))
+{
+    <hr />
+    <div class="form-group">
+        @Html.Label("Required Information", new { @class = "text-warning" })<br />
+        @Html.LabelFor(m => m.Movie.Name)
+        @Html.TextBoxFor(m => m.Movie.Name, new { @class = "form-control", placeholder = "Movie Name" })
+        @Html.ValidationMessageFor(m => m.Movie.Name)<br />
+
+        @Html.LabelFor(m => m.Movie.ReleaseDate)
+        @Html.TextBoxFor(m => m.Movie.ReleaseDate, "{0:MMMM d, yyyyy}", new { @class = "form-control", placeholder = "Release Date" })
+        @Html.ValidationMessageFor(m => m.Movie.ReleaseDate)<br />
+
+        @Html.LabelFor(m => m.Movie.Description)
+        @Html.TextAreaFor(m => m.Movie.Description, new { @class = "form-control", rows = "20", placeholder = "Movie Description" })
+        @Html.ValidationMessageFor(m => m.Movie.Description)<br />
+
+        @Html.ValidationMessageFor(m => m.Movie.GenreId, "Please select a Genre")
+        <br />
+        @Html.DropDownListFor(m => m.Movie.GenreId, new SelectList(Model.Genres, "Id", "Name"), "Select Genre", new { @class = "form-control" })<br />
+
+        @Html.LabelFor(m => m.Movie.InStock)
+        @Html.TextBoxFor(m => m.Movie.InStock, new { @class = "form-control", placeholder = "Number in Stock" })
+        @Html.ValidationMessageFor(m => m.Movie.InStock)<br />
+
+    </div>
+
+    <hr />
+    @Html.HiddenFor(m => m.Movie.Id)
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-info">Save</button>
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

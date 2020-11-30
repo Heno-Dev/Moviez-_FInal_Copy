@@ -1,0 +1,60 @@
+﻿@model Moviez_.ViewModels.CustomerFormViewModel
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Customer Infomation</h2>
+<link href="Site.css" rel="stylesheet"/>
+
+@using (Html.BeginForm("Save", "Customers"))
+{
+    <hr />
+    <div class="form-group">
+        @Html.Label("Required Information", new { @class = "text-warning" })<br />
+        @Html.TextBoxFor(m => m.Customer.Name, new { @class = "form-control", placeholder = "Customer Name" })
+        @Html.ValidationMessageFor(m => m.Customer.Name)<br />
+
+        @Html.LabelFor(m => m.Customer.street_address)
+        @Html.TextBoxFor(m => m.Customer.street_address, new { @class = "form-control", placeholder = "Street Address" })
+        @Html.ValidationMessageFor(m => m.Customer.street_address)<br />
+
+        @Html.TextBoxFor(m => m.Customer.city_address, new { @class = "form-control", placeholder = "City" })
+        @Html.ValidationMessageFor(m => m.Customer.city_address)<br />
+
+        @Html.TextBoxFor(m => m.Customer.state_address, new { @class = "form-control", placeholder = "State (XX)", maxlength = "2" })
+        @Html.ValidationMessageFor(m => m.Customer.state_address)<br />
+
+        @Html.TextBoxFor(m => m.Customer.zip_address, "{0:#.#}", new { @class = "form-control", placeholder = "Zip Code", @type = "number" })
+        @Html.ValidationMessageFor(m => m.Customer.zip_address)<br />
+
+        @Html.TextBoxFor(m => m.Customer.phone_address, "{0:#.#}", new { @class = "form-control", placeholder = "Phone", @type = "tel" })
+        @Html.ValidationMessageFor(m => m.Customer.phone_address)<br />
+
+        @Html.TextBoxFor(m => m.Customer.email_address, new { @class = "form-control", placeholder = "Email", @type = "email" })<br />
+        @Html.LabelFor(m => m.Customer.MembershipTypeId)
+        @Html.DropDownListFor(m => m.Customer.MembershipTypeId, new SelectList(Model.MembershipTypes,
+        "Id", "Name"), "Select Membership Type", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Customer.MembershipTypeId)<br />
+    </div>
+    <hr />
+    <div class="form-group">
+        @Html.Label("Optional Information", new { @class = "text-warning" })<br />
+        @Html.TextBoxFor(m => m.Customer.birthdate, "{0:d MMM yyyy}", new { @class = "form-control", placeholder = "Birthdate (DD-MM-YYYY)" })
+        @Html.ValidationMessageFor(m => m.Customer.birthdate)
+    </div>
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Customer.IsSubscribed) Subscribe to Newsletter?
+        </label>
+    </div>
+    <hr />
+
+    @Html.HiddenFor(m => m.Customer.Id);
+    @Html.AntiForgeryToken();
+    <button type="submit" class="btn btn-info">Save</button>
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")}

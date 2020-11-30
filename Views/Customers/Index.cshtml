@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Moviez_.Models.Customer>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+ .dataTables_filter {
+     float: right; 
+ }
+
+ .paginate_button {
+     float: right;
+     
+ 
+ }
+</style>
+
+<h2>Customers</h2>
+@Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-info" })
+<br />
+<br />
+<table id="customers"class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Customer</th>
+            <th>Current Membership</th>
+            <th>Discount Rate</th>
+            <th>Subscribed to Newsletter?</th>
+            <th>Delete Customer</th>
+
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts
+        {
+    <script>
+        $(document).ready(function () {
+            var table = $("#customers").DataTable({
+                ajax: {
+                    url: "/api/customers",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, customer) {
+                            return "<a href='/customers/edit/" + customer.id + "'>" + customer.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "membershipType.name"
+                    },
+                    {
+                        data: "membershipType.discountRate",
+                        render: function (data, type, customer) {
+                            return data + " %";
+                        }
+                    },
+                    {
+                        data: "isSubscribed"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            return "<button class='btn-link js-delete' data-customer-id=" + data + ">Delete</button>";
+                        }
+                    }
+                ]
+            });
+            $("#customers").on("click", ".js-delete", function () {
+                var button = $(this);
+                bootbox.confirm("Are you sure you want to delete this customer?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/customers/" + button.attr("data-customer-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script type="text/javascript" src=" https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+}
